@@ -1,0 +1,39 @@
+---
+title: "Unit 9"
+author: "Duy Vo"
+format: pdf
+editor: visual
+---
+
+
+# Question 2
+
+## Question 2.1
+$$
+\begin{split}
+\hat{livespan} = 11.5+2.0*weight + 1.5*carnivore − 1.2*omnivore\\
+\hat{livespan_a} = 11.5 + 2.0*weight+1.5⋅carnivore\\
+\hat{livespan_b} = 11.5+ 2.0*(weight-5)+1.5⋅carnivore
+\end{split}
+$$
+
+$$
+\begin{split}
+\hat{livespan_a} - \hat{livespan_b} & = 2.0*weight - 2.0*(weight-5) \\
+& = 2 * weight - 2* weight + -2 * -5 \\
+& = 10
+\end{split}
+$$
+
+## Question 2.2
+$$
+\begin{split}
+\hat{livespan_a} = 11.5 + 2.0 * weight\\
+\hat{livespan_b} = 11.5 + 2.0 * weight +1.5
+\end{split}
+$$
+$$
+\begin{split}
+\hat{livespan_a} - \hat{livespan_b} & = 1.5
+\end{split}
+$$
