@@ -1,0 +1,31 @@
+---
+title: "Programming Assignment 9 Problem 4.5"
+author: "Duy Vo duyvo@berkeley.edu"
+format: pdf
+editor: visual
+---
+
+
+```{r load_q4_data, echo=FALSE, include=FALSE}
+source("Q4.R")
+```
+
+```{r analyze_mode, echo=FALSE}
+summary_statistics <- summary(model)
+```
+
+The linear model
+$$
+\hat{general\_votes} = \hat{\beta}_0 + \hat{\beta}_0{ttl\_disb} + \hat{\beta}_2I({candidate\_party}){ttl\_disb}
+$$
+shows statistically significant estimators for democrats and other parties, but not republicans.
+
+The following plot shows that the data is likely linear in nature, though heteroskedastic.
+```{r plot_1}
+plot(model, which = 1)
+```
+
+The following ploat shows that the our model is unbiased and is normally-distributed.
+```{r plot_2}
+plot(model, which = 2)
+```

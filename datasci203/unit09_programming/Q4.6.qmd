@@ -1,0 +1,26 @@
+---
+title: "Programming Assignment 9 Problem 4.6"
+author: "Duy Vo duyvo@berkeley.edu"
+format: pdf
+editor: visual
+---
+
+```{r setup, echo=FALSE, include=FALSE}
+library(sandwich)
+library(stargazer)
+source("Q4.R")
+```
+
+```{r generate_table, results="asis"}
+stargazer(model, 
+          type = "latex",
+          se = list(sqrt(diag(vcovHC(model, type = "HC1")))),
+          title = "Predicting General Votes based on Candidate Party and Funding",
+          dep.var.labels = "General Votes",
+          covariate.labels = c("Total Disbursement",
+                               "Candidate Party: Other Party", 
+                               "Candidate Party: Republican",
+                               "Candidate Party: Democrat (baseline)"),
+          notes.label = "Significance:"
+)
+```
