@@ -1,0 +1,66 @@
+---
+title: "Q3_1"
+author: "Duy Vo (duyvo@berkeley.edu)"
+format: pdf
+---
+
+I am implementing a two-sample t-test to determine whether people in countries with high GDP per capita (higher than the mean) are more happy or less happy than people in countries with low GDP (lower than the mean). I make the following assumptions for a t-test:
+
+1. The data must be normally distributed
+1. The data must be independent and identically-distributed
+1. We are only comparing two groups (low and high gdp)
+
+```{r analyze_happiness, echo=FALSE, message=FALSE}
+library(broom)
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyverse)
+
+happiness_data <- read_csv("data/Happiness_WHR.csv")
+
+gdp_mean <- mean(happiness_data$'Economy (GDP per Capita)', na.rm = TRUE)
+
+prepped_data <- happiness_data %>%
+  select('Country', 'Economy (GDP per Capita)', 'Happiness Score') %>%
+  mutate(
+    gdp_group = ifelse(
+      `Economy (GDP per Capita)` > gdp_mean,
+      "high_gdp",
+      "low_gdp"
+    )
+  ) %>%
+  filter(!is.na(gdp_group))
+```
+
+By inspecting @fig-plot, we can see that the countries with a GDP lower than the mean tends to be less happy.
+
+```{r generate_graph}
+#| label: fig-plot
+#| fig-cap: "Distribution of Happiness Score by GDP Group"
+#| echo: false
+ggplot(
+  data = prepped_data,
+  aes(x = `gdp_group`, y = `Happiness Score`, fill = `gdp_group`)
+  ) +
+  geom_violin(trim = FALSE) +
+  labs(
+    x = "GDP Group",
+    y = "Happiness Score",
+    fill = "gdp_group"
+  )
+
+#head(prepped_data)
+```
+
+
+```{r t_test, echo=FALSE}
+t_test_result <- t.test(
+  `Happiness Score` ~ gdp_group,
+  data = prepped_data,
+  var.equal = FALSE
+)
+# print(t_test_result)
+tidy_results <- tidy(t_test_result)
+```
+The result of the t-test with a T-statistic of `r tidy_results$statistic` shows that there is a significant difference in happiness score for low and high GDP countries and a $p-value$ of `r tidy_results$p.value`shows that the T-statistic is statistically significant.
