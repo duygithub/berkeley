@@ -2,7 +2,6 @@
 title: "Programming Assignment 9 Problem 4.6"
 author: "Duy Vo duyvo@berkeley.edu"
 format: pdf
-editor: visual
 ---
 
 ```{r setup, echo=FALSE, include=FALSE}

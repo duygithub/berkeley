@@ -1,0 +1,5 @@
+---
+title: "Q3.2"
+author: "Duy Vo (duyvo@berkeley.edu)"
+format: pdf
+---

@@ -1,0 +1,52 @@
+---
+title: "Q3.3"
+author: "Duy Vo (duyvo@berkeley.edu)"
+format: pdf
+---
+
+In order to run a Wilcoxon Signed-Rank Test, we make the following assumptions:
+
+1. There is a relationship between heart disease and liver disease for a given country. Given that the values are per-country, this condition is met.
+1. The data must be independent and identically-distributed. We assume that the data iid because it's collected for different countries and we don't have strong enough evidence to think that countries will impact each other.
+1. The data must be continuous. Since this is a count, we can assume the data is likely countably continuous.
+1. The data can't be too skewed. Looking at @fig-data_diff_plot (red is mean, blue is median), we have no evidence the data is skewed.
+
+```{r setup, echo=FALSE}
+library(ggplot2)
+library(broom)
+library(wooldridge)
+
+# data(package = "wooldridge")
+data("wine")
+
+wine$diff <- wine$heart - wine$liver
+
+# ?wine
+# head(wine)
+```
+
+```{r draw_plot}
+#| label: fig-data_diff_plot
+#| fig-cap: "Difference between heart and liver disease death per 100,000 per country"
+#| fig-pos: H
+#| echo: false
+#| warning: false
+
+ggplot(wine,
+       aes(x = diff)) +
+  geom_histogram(bins = 10) +
+  geom_vline(aes(xintercept = mean(diff)), color = "red", linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = median(diff)), color = "blue", linetype = "dashed", size = 1) +
+  labs(title = "Histogram of Differences (Heart - Liver)",
+       x = "Difference in Death Rates",
+       y = "Frequency")
+```
+
+```{r analysis, echo=FALSE}
+# summary(wine$diff)
+test_result <- wilcox.test(wine$heart, wine$liver, paired = TRUE)
+tidy_result <- tidy(test_result)
+# print(tidy_result)
+```
+
+The dataset has 21 entries, giving us an $S_{expected} = \frac{n(n+1)}{4} = \frac{21*22}{4} = 115.5$. Since the statistic of `r tidy_result$statistic` is much greater than $S_{expected}$, we can confidently say that the number of deaths associated with heart disease is greater than liver disease. With a $p-value$ of `r tidy_result$p.value`, we can say that our findings is statistically significant.
