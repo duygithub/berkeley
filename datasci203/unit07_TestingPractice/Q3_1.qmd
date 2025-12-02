@@ -6,18 +6,14 @@ format: pdf
 
 I am implementing a two-sample t-test to determine whether people in countries with high GDP per capita (higher than the mean) are more happy or less happy than people in countries with low GDP (lower than the mean). I make the following assumptions for a t-test:
 
-1. The data must be approximately normally distributed. Using CLT and since we have more than 30 observations, we can make this assumption.
-1. The data must be independent and identically-distributed. We assume that the data iid because it's collected for different countries and we don't have strong enough evidence to think that countries will impact each other.
-1. We are only comparing two groups (low and high gdp). Since we are defining the groups, we can make sure we only specify two groups.
-
-```{r analyze_happiness, echo=FALSE, message=FALSE}
+```{r setup, echo=FALSE, message=FALSE}
 library(broom)
 library(dplyr)
 library(ggplot2)
 library(readr)
-library(tidyverse)
 
 happiness_data <- read_csv("data/happiness_WHR.csv")
+number_of_entries <- nrow(happiness_data)
 
 gdp_mean <- mean(exp(happiness_data$`Log GDP per capita`), na.rm = TRUE)
 
@@ -34,7 +30,11 @@ prepped_data <- happiness_data %>%
   filter(!is.na(gdp_group))
 ```
 
-By inspecting @fig-plot, we can see that the countries with a GDP lower than the mean tends to be less happy.
+1. Since we have `r number_of_entries` observations, which is greater than 30, we can rely on the CLT for a normally-distributed sampling distribution of the sample mean. This meets the normal distribution requirement for the t-test.
+1. The data must be independent and identically-distributed. We assume that the data iid because it's collected for different countries and we don't have strong enough evidence to think that countries will impact each other.
+1. We are only comparing two groups (low and high gdp). Since we are defining the groups, we can make sure we only specify two groups.
+
+By inspecting @fig-plot, we can see that the countries with a GDP lower than the mean tends to have lower life ladder values.
 
 ```{r generate_graph}
 #| label: fig-plot
@@ -66,4 +66,5 @@ t_test_result <- t.test(
 # print(t_test_result)
 tidy_results <- tidy(t_test_result)
 ```
-The result of the t-test with a T-statistic of `r tidy_results$statistic` shows that there is a significant difference in happiness score for low and high GDP countries and a $p-value$ of `r tidy_results$p.value`shows that the T-statistic is statistically significant.
+
+The result of the t-test with a T-statistic of `r tidy_results$statistic` shows high GDP countries have greater life ladder values than low GDP countries, which is consistent with @fig-plot. A $p-value$ of `r tidy_results$p.value` shows that the T-statistic is statistically significant.

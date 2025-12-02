@@ -1,0 +1,53 @@
+---
+title: "Q3.4"
+author: "Duy Vo (duyvo@berkeley.edu)"
+format: pdf
+---
+
+```{r setup, echo=FALSE, message=FALSE}
+library(broom)
+library(dplyr)
+library(ggplot2)
+library(readr)
+
+religion_data <- read_csv("data/GSS_religion.csv")
+number_of_entries <- nrow(religion_data)
+```
+
+I am implementing a two-sample t-test to determine whether people in the US feel more positive towards Catholics or Protestants. a t-test requires the following conditions:
+
+1. Since we have `r number_of_entries` observations, which is greater than 30, we can rely on the CLT for a normally-distributed sampling distribution of the sample mean. This meets the normal distribution requirement for the t-test.
+1. The data must be independent and identically-distributed. We assume that the author of the collected data selected individuals for the study in a way that the respondents are iid.
+1. We are only comparing two groups (Catholics and Protestants).
+
+```{r plot_data}
+#| echo: false
+#| fig-cap: "Warmness felt by US respondents towards Catholics and Protestants"
+#| fig-pos: H
+#| label: fig-plot_data
+
+religion_with_frequency_df <- religion_data %>%
+  count(cathtemp, prottemp, name = "Frequency")
+
+ggplot(data = religion_with_frequency_df,
+       aes(x = cathtemp, y=prottemp)) +
+  geom_point(aes(size = Frequency), alpha = 0.6, color = "blue") +
+  scale_size_continuous(range = c(1, 10)) +
+  labs(
+    x = "Warmness towards Catholics",
+    y = "Warmness towards Protestants"
+  ) +
+  guides(size = "none")
+```
+
+```{r analysis, echo=FALSE}
+test_result <- t.test(
+  religion_data$cathtemp,
+  religion_data$prottemp,
+  paired=TRUE
+)
+# print(test_result)
+tidy_result <- tidy(test_result)
+```
+
+From @fig-plot_data, it's not clear that there is a significant difference between the warmness respondents feel towards Catholics or Protestants. However, the t-test produced a $p-value$ of `r tidy_result$p.value`, so we believe that there is a difference. A t-statistic of `r tidy_result$statistic` tells us that respondents are slightly warmer towards Protestants than Catholics.
