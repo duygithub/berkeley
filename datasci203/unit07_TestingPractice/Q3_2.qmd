@@ -3,3 +3,62 @@ title: "Q3.2"
 author: "Duy Vo (duyvo@berkeley.edu)"
 format: pdf
 ---
+
+```{r setup, echo=FALSE, message=FALSE}
+library(broom)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(readr)
+
+current_date <- Sys.Date()
+
+legislators_data <- read_csv("data/legislators-current.csv")
+senators_data <- legislators_data %>%
+  select(`birthday`, `party`) %>%
+  mutate(
+    age_years = time_length(interval(as.Date(birthday), current_date), unit = "year")
+  ) %>%
+  filter(`party` %in% c("Democrat", "Republican"))
+
+```
+
+In order to use the Wilcoxon Rank-Sum test, we make the assumptions:
+
+1. The data must be independent and identically-distributed. We assume that the data iid because we have the full population and we assume that the election of one senator does not impact the election of another senator
+1. Since we are comparing age, we need the age to be at least of an ordinal scale in the hierarchy of data. Since age is often considered a ratio level, we have met this requirement because ratio level is higher than ordinal level.
+
+```{r plot_data}
+#| echo: false
+#| fig-cap: "Median age of senators by major party"
+#| fig-pos: H
+#| label: fig-plot
+
+ggplot(
+  data = senators_data,
+  aes(x = `party`, y = `age_years`, fill = `party`)
+  ) +
+  geom_boxplot() +
+  scale_fill_manual(values = c(`Democrat` = "blue", `Republican` = "red")) +
+  labs(
+    x = "Major Party",
+    y = "Age (Years)",
+    fill = "party"
+  )
+
+
+```
+
+```{r analysis, echo=FALSE}
+test_result <- wilcox.test(age_years ~ party, data = senators_data)
+tidy_result <- tidy(test_result)
+
+democrat_count <- sum(senators_data$party == 'Democrat')
+republican_count <- sum(senators_data$party == 'Republican')
+total_number_of_entries <- democrat_count + republican_count
+
+s_observed <- tidy_result$statistic + ((democrat_count * (democrat_count + 1))/2)
+s_expected <- (democrat_count * (total_number_of_entries + 1)) / 2
+```
+
+Visually, from @fig-plot, it's not clear that there is a significant difference. However, with a $p-value$ of `r tidy_result$p.value`, we can say that our findings is statistically significant. Examining the Democratic Senators, with $S_{observed}=$`r s_observed` $>$ $S_{expected}=$ `r s_expected`, we can say that the median age of Democratic Senators is higher than those of Republican Senators, which is consistent with @fig-plot.

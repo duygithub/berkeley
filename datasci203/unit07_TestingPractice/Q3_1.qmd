@@ -38,7 +38,7 @@ By inspecting @fig-plot, we can see that the countries with a GDP lower than the
 
 ```{r generate_graph}
 #| label: fig-plot
-#| fig-cap: "Distribution of Life Ladder by GDP Group"
+#| fig-cap: "Distribution of life ladder by gdp_group"
 #| fig-pos: H
 #| echo: false
 

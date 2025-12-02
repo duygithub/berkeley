@@ -11,7 +11,7 @@ In order to run a Wilcoxon Signed-Rank Test, we make the following assumptions:
 1. The data must be continuous. Since this is a count, we can assume the data is likely countably continuous.
 1. The data can't be too skewed. Looking at @fig-data_diff_plot (red is mean, blue is median), we have no evidence the data is skewed.
 
-```{r setup, echo=FALSE}
+```{r setup, echo=FALSE, message=FALSE}
 library(ggplot2)
 library(broom)
 library(wooldridge)
@@ -25,7 +25,7 @@ wine$diff <- wine$heart - wine$liver
 # head(wine)
 ```
 
-```{r draw_plot}
+```{r draw_plot_diff}
 #| label: fig-data_diff_plot
 #| fig-cap: "Difference between heart and liver disease death per 100,000 per country"
 #| fig-pos: H
@@ -37,9 +37,29 @@ ggplot(wine,
   geom_histogram(bins = 10) +
   geom_vline(aes(xintercept = mean(diff)), color = "red", linetype = "dashed", size = 1) +
   geom_vline(aes(xintercept = median(diff)), color = "blue", linetype = "dashed", size = 1) +
-  labs(title = "Histogram of Differences (Heart - Liver)",
+  labs(title = "Histogram of differeces (Heart - Liver)",
        x = "Difference in Death Rates",
        y = "Frequency")
+```
+
+```{r plot_data}
+#| echo: false
+#| fig-cap: "Deaths by heart and liver -related disease per 100,000"
+#| fig-pos: H
+#| label: fig-plot_data
+
+ggplot(data = wine) +
+  geom_segment(aes(y = wine$country, yend = wine$country, x = wine$heart, xend = wine$liver), color = "gray80", size = 1) +
+  geom_point(aes(y = wine$country, x = wine$heart, color = "Heart Disease"), size = 3) +
+  geom_point(aes(y = wine$country, x = wine$liver, color = "Liver Disease"), size = 3) +
+  scale_color_manual(name = "Cause of Death", 
+                     values = c("Heart Disease" = "red", "Liver Disease" = "blue")) +
+  labs(
+    x = "Number of Deaths",
+    y = NULL
+  )
+
+
 ```
 
 ```{r analysis, echo=FALSE}
@@ -49,4 +69,4 @@ tidy_result <- tidy(test_result)
 # print(tidy_result)
 ```
 
-The dataset has 21 entries, giving us an $S_{expected} = \frac{n(n+1)}{4} = \frac{21*22}{4} = 115.5$. Since the statistic of `r tidy_result$statistic` is much greater than $S_{expected}$, we can confidently say that the number of deaths associated with heart disease is greater than liver disease. With a $p-value$ of `r tidy_result$p.value`, we can say that our findings is statistically significant.
+With a $p-value$ of `r tidy_result$p.value`, we can say that our findings is statistically significant. $W=$ `r tidy_result$statistic` tells us that the deaths from heart disease is higher than liver disease, which we can visually confirm with @fig-plot_data.
