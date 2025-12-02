@@ -6,7 +6,7 @@ format: pdf
 
 I am implementing a two-sample t-test to determine whether people in countries with high GDP per capita (higher than the mean) are more happy or less happy than people in countries with low GDP (lower than the mean). I make the following assumptions for a t-test:
 
-1. The data must be normally distributed. Using CLt and since we have more than 30 observations, we can make this assumption.
+1. The data must be approximately normally distributed. Using CLT and since we have more than 30 observations, we can make this assumption.
 1. The data must be independent and identically-distributed. We assume that the data iid because it's collected for different countries and we don't have strong enough evidence to think that countries will impact each other.
 1. We are only comparing two groups (low and high gdp). Since we are defining the groups, we can make sure we only specify two groups.
 
@@ -17,15 +17,16 @@ library(ggplot2)
 library(readr)
 library(tidyverse)
 
-happiness_data <- read_csv("data/Happiness_WHR.csv")
+happiness_data <- read_csv("data/happiness_WHR.csv")
 
-gdp_mean <- mean(happiness_data$'Economy (GDP per Capita)', na.rm = TRUE)
+gdp_mean <- mean(exp(happiness_data$`Log GDP per capita`), na.rm = TRUE)
 
 prepped_data <- happiness_data %>%
-  select('Country', 'Economy (GDP per Capita)', 'Happiness Score') %>%
+  select(`Country name`, `Log GDP per capita`, `Life Ladder`) %>%
   mutate(
+    gdp_per_capita = exp(`Log GDP per capita`),
     gdp_group = ifelse(
-      `Economy (GDP per Capita)` > gdp_mean,
+      gdp_per_capita > gdp_mean,
       "high_gdp",
       "low_gdp"
     )
@@ -37,18 +38,18 @@ By inspecting @fig-plot, we can see that the countries with a GDP lower than the
 
 ```{r generate_graph}
 #| label: fig-plot
-#| fig-cap: "Distribution of Happiness Score by GDP Group"
+#| fig-cap: "Distribution of Life Ladder by GDP Group"
 #| fig-pos: H
 #| echo: false
 
 ggplot(
   data = prepped_data,
-  aes(x = `gdp_group`, y = `Happiness Score`, fill = `gdp_group`)
+  aes(x = `gdp_group`, y = `Life Ladder`, fill = `gdp_group`)
   ) +
   geom_violin(trim = FALSE) +
   labs(
     x = "GDP Group",
-    y = "Happiness Score",
+    y = "Life Ladder",
     fill = "gdp_group"
   )
 
@@ -58,7 +59,7 @@ ggplot(
 
 ```{r t_test, echo=FALSE}
 t_test_result <- t.test(
-  `Happiness Score` ~ gdp_group,
+  `Life Ladder` ~ gdp_group,
   data = prepped_data,
   var.equal = FALSE
 )
