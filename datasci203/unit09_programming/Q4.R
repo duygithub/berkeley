@@ -35,9 +35,7 @@ ggplot(data = campaigns,
 
 joined_results_house_campaigns_df <- inner_join(results_house, campaigns, by = "cand_id")
 number_of_rows <- nrow(joined_results_house_campaigns_df)
-
-joined_results_house_campaigns_df_2 <- inner_join(results_house, campaigns, by = "cand_id")
-number_of_rows_2 <- nrow(joined_results_house_campaigns_df_2)
+number_of_cols <- ncol(joined_results_house_campaigns_df)
 
 head(joined_results_house_campaigns_df)
 

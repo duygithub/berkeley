@@ -4,7 +4,7 @@ author: "Duy Vo (duyvo@berkeley.edu)"
 format: pdf
 ---
 
-I am implementing a two-sample t-test to determine whether people in countries with high GDP per capita (higher than the mean) are more happy or less happy than people in countries with low GDP (lower than the mean). I make the following assumptions for a t-test:
+I am implementing a two-sample t-test to determine whether people in countries with high GDP per capita (higher than the mean) are more happy or less happy than people in countries with low GDP (lower than the mean). The following requirements are needed for a t-test:
 
 ```{r setup, echo=FALSE, message=FALSE}
 library(broom)
@@ -30,9 +30,10 @@ prepped_data <- happiness_data %>%
   filter(!is.na(gdp_group))
 ```
 
-1. Since we have `r number_of_entries` observations, which is greater than 30, we can rely on the CLT for a normally-distributed sampling distribution of the sample mean. This meets the normal distribution requirement for the t-test.
-1. The data must be independent and identically-distributed. We assume that the data iid because it's collected for different countries and we don't have strong enough evidence to think that countries will impact each other.
-1. We are only comparing two groups (low and high gdp). Since we are defining the groups, we can make sure we only specify two groups.
+* Since we have `r number_of_entries` observations, which is greater than 30, we can rely on the CLT for a normally-distributed sampling distribution of the sample mean. This meets the normal distribution requirement for the t-test.
+* The data must be independent and identically-distributed. We assume that the data iid because it's collected for different countries and we don't have strong enough evidence to think that countries will impact each other.
+* We are only comparing two groups (low and high gdp). Since we are defining the groups, we can make sure we only specify two groups.
+* The data must be at least interval scale. The Cantril Ladder seems to be ordinal scale, so a t-test is not ideal and we should use a non-paramaterized. However, the instructions are to use a t-test, so I am following the instructions.
 
 By inspecting @fig-plot, we can see that the countries with a GDP lower than the mean tends to have lower life ladder values.
 

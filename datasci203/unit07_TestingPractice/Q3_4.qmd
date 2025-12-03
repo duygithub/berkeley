@@ -48,6 +48,10 @@ test_result <- t.test(
 )
 # print(test_result)
 tidy_result <- tidy(test_result)
+
+mean_cathtemp <- mean(religion_data$cathtemp)
+mean_prottemp <- mean(religion_data$prottemp)
+mean_precent_difference <- abs(mean_cathtemp - mean_prottemp) / ((mean_cathtemp + mean_prottemp) / 2) * 100
 ```
 
-From @fig-plot_data, it's not clear that there is a significant difference between the warmness respondents feel towards Catholics or Protestants. However, the t-test produced a $p-value$ of `r tidy_result$p.value`, so we believe that there is a difference. A t-statistic of `r tidy_result$statistic` tells us that respondents are slightly warmer towards Protestants than Catholics.
+From @fig-plot_data, it's not clear that there is a significant difference between the warmness respondents feel towards Catholics or Protestants. However, the t-test produced a $p-value$ of `r tidy_result$p.value`, so we believe that there is a difference. A t-statistic of `r tidy_result$statistic` tells us that respondents are warmer towards Protestants than Catholics. By examining the mean the respondents' warmness towards Catholics ($\bar{x}=$ `r mean_cathtemp`) and Protestants ($\bar{x}=$ `r mean_prottemp`) representing a perecent difference of `r mean_precent_difference`%, we believe that there isn't a significantly more warmness towards Protestants than Catholics.
