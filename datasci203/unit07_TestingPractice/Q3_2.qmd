@@ -25,9 +25,9 @@ senators_data <- legislators_data %>%
 
 In order to use the Wilcoxon Rank-Sum test, we make the assumptions:
 
-*. The data must be independent and identically-distributed. We assume that the data iid because we have the full population and we assume that the election of one senator does not impact the election of another senator.
+* The data must be independent and identically-distributed. We assume that the data iid because we have the full population and we assume that the election of one senator does not impact the election of another senator.
   * As frequentist, we have to imagine all the possible ways the senator can be selected beyond the current environment. There isn't evidence that age is a major factor of how states elect their senators, so we can safely proceed with our assumptions.
-*. Since we are comparing age, we need the age to be at least of an ordinal scale in the hierarchy of data. Since age is often considered a ratio level, we have met this requirement because ratio level is higher than ordinal level.
+* Since we are comparing age, we need the age to be at least of an ordinal scale in the hierarchy of data. Since age is often considered a ratio level, we have met this requirement because ratio level is higher than ordinal level.
 
 ```{r plot_data}
 #| echo: false
