@@ -1,0 +1,33 @@
+---
+title: "Unit 12 Q3.2"
+author: "Duy Vo (duyvo@berkeley.edu)"
+format: pdf
+---
+
+```{r setup, echo=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyverse)
+
+source("analysis.R")
+```
+
+```{r plot_data}
+#| echo: false
+#| fig-cap: "Time of dream and non-dream per specie"
+#| fig-pos: H
+#| label: fig-plot_data
+
+ggplot(data = prepped_data,
+       aes(x = dreaming, y=non_dreaming)) +
+  geom_point(aes(size = 1), alpha = 0.6, color = "blue") +
+  labs(
+    x = "Dream time",
+    y = "Non-dream time"
+  ) +
+  guides(size = "none")
+```
+
+By visually inspecting @fig-plot_data, we do not see collinearity. We verify that there is no perfect collinearity because the correlation between these two values is `r dreaming_non_dreaming_correlation`.
+

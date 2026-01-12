@@ -1,0 +1,46 @@
+---
+title: "Unit 12 Q3.1"
+author: "Duy Vo (duyvo@berkeley.edu)"
+format: pdf
+---
+
+```{r setup, echo=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyverse)
+
+source("analysis.R")
+```
+
+Looking at the data, it's not clear that the data is iid because there's no justification about how the `r number_of_entries` entries are selected. We can, however, make use of the model because:
+
+* dreaming and non_dreaming are on the ratio scale.
+* We have `r number_of_entries` entries, more than the common requirement of 30. While it's not clear that the data is iid, there's nothing to makes us believe the data is not iid, so we can rely on the CLT (and we can confirm this by looking at @fig-plot, which seems to be normally distributed.)
+
+```{r plot}
+#| echo: FALSE
+#| fig-cap: Dream and Non-Dream Times for Mammal
+#| fig-pos: H
+#| label: fig-plot
+
+ggplot(data_long, aes(x = hours, fill = sleep_type)) +
+  geom_histogram(
+    binwidth = 2,
+    position = "stack",
+    alpha = 0.7,
+    color = "black"
+  ) +
+  geom_vline(
+    data = means,
+    aes(xintercept = mean_hours, color = sleep_type),
+    linetype = "dashed",
+    linewidth = 1
+  ) +
+  labs(
+    x = "Number of Hours",
+    y = "Count of Species",
+    fill = "Sleep Type",
+    color = "Mean"
+  )
+```

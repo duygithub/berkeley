@@ -1,0 +1,25 @@
+---
+title: "Unit 12 Q3.4"
+author: "Duy Vo (duyvo@berkeley.edu)"
+format: pdf
+---
+
+```{r setup, echo=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyverse)
+
+source("analysis.R")
+```
+
+```{r plot_lm_model}
+#| echo: false
+#| fig-cap: "Residuals vs Fitted Values Plot of Linear Model"
+#| fig-pos: H
+#| label: fig-plot_lm_model
+
+plot(lm_model, which = 3)
+```
+
+By visually inspecting @fig-plot_lm_model, we can see that there is a meaningful slope, giving evidence that the data is likely heteroskedastic.

@@ -1,0 +1,61 @@
+---
+title: "Unit 12 Q3.3"
+author: "Duy Vo (duyvo@berkeley.edu)"
+format: pdf
+---
+
+```{r setup, echo=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyverse)
+
+source("analysis.R")
+```
+
+```{r plot_lm_model}
+#| echo: false
+#| fig-cap: "Residuals vs Fitted Values Plot of Linear Model"
+#| fig-pos: H
+#| label: fig-plot_lm_model
+
+plot(lm_model, which = 1)
+```
+
+By visually inspecting @fig-plot_lm_model, we can see that the residuals are mostly not scattered around a horizontal line at 0, therefore the data is likely not linear.
+
+```{r plot_dreaming}
+#| echo: false
+#| fig-cap: "dreaming vs brain_wt"
+#| fig-pos: H
+#| label: fig-plot_dreaming
+#| message: false
+#| warning: false
+
+ggplot(mammals_data, aes(x = brain_wt, y = dreaming)) +
+  geom_point() +
+  geom_smooth(method = "loess", color = "blue")
+```
+
+```{r plot_non_dreaming}
+#| echo: false
+#| fig-cap: "non_dreaming vs brain_wt"
+#| fig-pos: H
+#| label: fig-plot_non_dreaming
+#| message: false
+#| warning: false
+
+ggplot(mammals_data, aes(x = brain_wt, y = non_dreaming)) +
+  geom_point() +
+  geom_smooth(method = "loess", color = "blue")
+```
+
+We can verify the non-linearity of the data by looking at @fig-plot_dreaming and @fig-plot_non_dreaming and confirm that the plots aren't linear. Finally, \ref{eq:lm_model} has an adjusted $R^2$=`r lm_model_summary$adj.r.squared` whereas \ref{eq:lm_model} has a higher adjusted $R^2$=`r inverse_lm_model_summary$adj.r.squared`.
+
+\begin{equation}
+{brain_wt} = \beta_0 + \beta_1{dreaming} + \beta_2{non\_dreaming} \label{eq:lm_model}
+\end{equation}
+
+\begin{equation}
+{brain_wt} = \beta_0 + \beta_1{dreaming} + \beta_2{non\_dreaming} + \beta_3{dreaming}^2 + \beta_4{non\_dreaming}^2 \label{eq:inverse_lm_model}
+\end{equation}

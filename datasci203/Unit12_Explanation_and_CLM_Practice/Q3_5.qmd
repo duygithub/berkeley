@@ -1,0 +1,25 @@
+---
+title: "Unit 12 Q3.5"
+author: "Duy Vo (duyvo@berkeley.edu)"
+format: pdf
+---
+
+```{r setup, echo=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyverse)
+
+source("analysis.R")
+```
+
+```{r plot_lm_model}
+#| echo: false
+#| fig-cap: "Residuals vs Fitted Values Plot of Linear Model"
+#| fig-pos: H
+#| label: fig-plot_model
+
+plot(lm_model, which = 2)
+```
+
+By visually inspecting @fig-plot_model, we can see that the residuals are not tightly packaged around the diagonal and indeed curves away from the diagonal towards the end, leading us to believe that the errors are not normally distributed.
