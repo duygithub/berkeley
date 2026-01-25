@@ -1,0 +1,20 @@
+project:
+  type: book
+  output-dir: _output
+
+book:
+  title: "Data Science Group Project"
+  authors: "David Griffin, Anthony Li, Sabrina Sun, Duy Vo"
+  date: "2024-05-20"
+  chapters:
+    - 10_motivation.ipynb
+    - 20_data.ipynb
+
+bibliography: references.bib
+
+format:
+  pdf:
+    documentclass: scrreprt
+    toc: true
+    number-sections: true
+    colorlinks: true
