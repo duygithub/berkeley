@@ -4,7 +4,7 @@ project:
 
 book:
   title: "Data Science Group Project"
-  authors: "David Griffin, Anthony Li, Sabrina Sun, Duy Vo"
+  authors: "David Griffin (david_griffin@berkeley.edu), Anthony Li (anthonyleeqy@berkeley.edu), Sabrina Sun (yolosun4488@berkeley.edu), Duy Vo (duyvo@berkeley.edu)"
   date: "2024-05-20"
   chapters:
     - 10_motivation.ipynb
