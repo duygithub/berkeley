@@ -1,0 +1,11 @@
+ipykernel
+jupyter
+kagglehub
+matplotlib
+numpy
+pandas
+pyyaml
+scikit-learn
+seaborn
+tensorflow
+tensorflow-datasets
