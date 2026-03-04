@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 datasci207/assignments/assignment7/EuroSAT/
+datasci207/in_class/week9/drugs_raw.csv
+.gitignore
+datasci207/in_class/week9/rows.csv
