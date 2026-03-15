@@ -4,6 +4,7 @@ kagglehub
 matplotlib
 numpy
 pandas
+plotly
 pyyaml
 scikit-learn
 seaborn
