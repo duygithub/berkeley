@@ -13,5 +13,6 @@
         }
     },
     "remoteUser": "vscode",
-    "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt"
+    "updateContentCommand": "pip install --upgrade pip && pip install -r requirements.txt"
+    // "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt"
 }
